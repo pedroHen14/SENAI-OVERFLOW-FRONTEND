@@ -1,11 +1,11 @@
-import Login from "./pages/Login";
 import { GlobalStyles } from "./GlobalStyles";
+import Home from "./pages/Home";
 
 function App() {
   return (
     <>
       <GlobalStyles />
-      <Login />
+      <Home />
     </>
   );
 }
