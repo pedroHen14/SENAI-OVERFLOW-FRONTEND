@@ -6,6 +6,8 @@ import {
   FeedContainer,
   ActionsContainer,
   QuestionCard,
+  Logo,
+  IconSignOut,
 } from "./styles";
 
 import imgProfile from "../../assets/foto_perfil.png";
@@ -37,7 +39,10 @@ function Profile(params) {
 function Home() {
   return (
     <Container>
-      <Header></Header>
+      <Header>
+        <Logo src={imgLogo} />
+        <IconSignOut />
+      </Header>
       <Content>
         <ProfileContainer>
           <Profile></Profile>
@@ -54,7 +59,48 @@ function Home() {
               <p>Descrição</p>
               <img src="https://www.freecodecamp.org/news/content/images/2020/02/Ekran-Resmi-2019-11-18-18.08.13.png"></img>
             </section>
-            <footer></footer>
+            <footer>
+              <h1>11 Respostas</h1>
+              <section>
+                <header>
+                  <img src={imgProfile} />
+                  <strong>por Fulano</strong>
+                  <p> 12/12/2012 as 12:12</p>
+                </header>
+                <p>Reposta para a pergunta.</p>
+              </section>
+              <form>
+                <textarea placeholder="Responda essa dúvida!" required />
+                <button>Enviar</button>
+              </form>
+            </footer>
+          </QuestionCard>
+          <QuestionCard>
+            <header>
+              <img src={imgProfile} />
+              <strong>por Cliclano da Silva</strong>
+              <p>em 12/12/2012 as 12:12</p>
+            </header>
+            <section>
+              <strong>Titulo</strong>
+              <p>Descrição</p>
+              <img src="https://www.freecodecamp.org/news/content/images/2020/02/Ekran-Resmi-2019-11-18-18.08.13.png"></img>
+            </section>
+            <footer>
+              <h1>11 Respostas</h1>
+              <section>
+                <header>
+                  <img src={imgProfile} />
+                  <strong>por Fulano</strong>
+                  <p> 12/12/2012 as 12:12</p>
+                </header>
+                <p>Reposta para a pergunta.</p>
+              </section>
+              <form>
+                <textarea placeholder="Responda essa dúvida!" required />
+                <button>Enviar</button>
+              </form>
+            </footer>
           </QuestionCard>
         </FeedContainer>
         <ActionsContainer>
