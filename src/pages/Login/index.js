@@ -3,6 +3,7 @@ import Input from "../../components/Input";
 import { Link, useHistory } from "react-router-dom";
 import { api } from "../../services/api";
 import { useState } from "react";
+import { signIn } from "../../services/security";
 
 function Login() {
   const history = useHistory();
@@ -17,6 +18,8 @@ function Login() {
 
     try {
       const response = await api.post("/sessions", login);
+
+      signIn(response.data);
 
       console.log(response.data);
 

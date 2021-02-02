@@ -16,17 +16,34 @@ function Register() {
     confirmPassword: "",
   });
 
+  const validPassword = () => register.password === register.confirmPassword;
+
+  const buttonDisabled = () => {
+    const { ra, name, email, password } = register;
+
+    if (!ra || !name || !email || !password || !validPassword()) return true;
+
+    return false;
+  };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
 
     try {
-      const response = await api.post("/students", register);
+      const { ra, name, email, password } = register;
+
+      const response = await api.post("/students", {
+        ra,
+        name,
+        email,
+        password,
+      });
 
       console.log(response.data);
 
-      //Implementar a autorização
+      history.push("/home");
 
-      history.push("/");
+      //Implementar a autorização
     } catch (error) {
       console.error(error);
       alert(error.response.data.error);
@@ -74,13 +91,17 @@ function Register() {
             handler={handleInput}
           />
           <Input
-            id="valid-password"
+            id="confirmPassword"
             label="Confirmar Senha"
             type="password"
+            onBlur={(e) => {
+              if (!validPassword()) alert("As senhas não coincidem");
+              e.target.focus();
+            }}
             value={register.confirmPassword}
             handler={handleInput}
           />
-          <Button>Entrar</Button>
+          <Button disabled={buttonDisabled()}>Entrar</Button>
           <Link to="/">Ou se ja tem cadastro clique aqui para entrar</Link>
         </Body>
       </FormLogin>
