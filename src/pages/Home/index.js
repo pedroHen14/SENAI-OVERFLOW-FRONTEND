@@ -14,8 +14,10 @@ import imgProfile from "../../assets/foto_perfil.png";
 import imgLogo from "../../assets/logo.png";
 import { useEffect, useState } from "react";
 import { api } from "../../services/api";
-import { signOut } from "../../services/security";
+import { signOut, getUser } from "../../services/security";
 import { Redirect, useHistory } from "react-router-dom";
+import styled from "styled-components";
+import { render } from "react-dom";
 
 function Profile() {
   return (
@@ -40,7 +42,61 @@ function Profile() {
   );
 }
 
+function Answers({ answers }) {
+  return (
+    <section>
+      <header>
+        <img src={imgProfile} alt="imagem de perfil" />
+        <strong>por {answers.Student.name}</strong>
+        <p> {answers.created_at}</p>
+      </header>
+      <p>{answers.description}</p>
+    </section>
+  );
+}
+
 function Question({ question }) {
+  const [showAnswers, setShowAnswers] = useState(false);
+
+  const [newAnswers, setNewAnswers] = useState("");
+
+  const [answers, setAnswers] = useState(question.Answers);
+
+  const qtdeAnswers = answers.length;
+
+  const handleAddAnswer = async (e) => {
+    e.preventDefault();
+
+    const questionId = question.id;
+
+    try {
+      const response = await api.post(`/questions/${questionId}/answers`, {
+        description: newAnswers,
+      });
+
+      console.log(response.data);
+
+      const aluno = getUser();
+
+      const answerAdded = {
+        id: response.data.id,
+        description: newAnswers,
+        created_at: response.data.createdAt,
+        Student: {
+          id: aluno.id,
+          name: aluno.name,
+        },
+      };
+
+      setAnswers([...answers, answerAdded]);
+
+      setNewAnswers("");
+    } catch (error) {
+      console.error(error);
+      alert(error.response.data.error);
+    }
+  };
+
   return (
     <QuestionCard>
       <header>
@@ -54,17 +110,30 @@ function Question({ question }) {
         <img src={question.image}></img>
       </section>
       <footer>
-        <h1>11 Respostas</h1>
-        <section>
-          <header>
-            <img src={imgProfile} alt="imagem de perfil" />
-            <strong>por Fulano</strong>
-            <p> 12/12/2012 as 12:12</p>
-          </header>
-          <p>{question.Answers.description}</p>
-        </section>
-        <form>
-          <textarea placeholder="Responda essa dúvida!" required />
+        <h1 onClick={() => setShowAnswers(!showAnswers)}>
+          {qtdeAnswers === 0 ? (
+            "Seja o primeiro a responder"
+          ) : (
+            <>
+              {qtdeAnswers}
+              {qtdeAnswers > 1 ? " Respostas" : " Resposta"}
+            </>
+          )}
+        </h1>
+        {showAnswers && (
+          <>
+            {answers.map((a) => (
+              <Answers answers={a} />
+            ))}
+          </>
+        )}
+        <form onSubmit={handleAddAnswer}>
+          <textarea
+            minLength="10"
+            onChange={(e) => setNewAnswers(e.target.value)}
+            placeholder="Responda essa dúvida!"
+            required
+          />
           <button>Enviar</button>
         </form>
       </footer>

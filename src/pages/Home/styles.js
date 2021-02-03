@@ -147,9 +147,10 @@ export const QuestionCard = styled.article`
       margin-top: 5px;
       display: flex;
       gap: 5px;
-
+      margin-top: 20px;
       > textarea {
         flex: 1;
+        border-radius: 3px;
       }
     }
   }
