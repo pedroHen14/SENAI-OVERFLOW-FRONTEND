@@ -24,7 +24,7 @@ export const Container = styled.div`
   }
 `;
 
-const loginAnimation = keyframes`
+export const loginAnimation = keyframes`
   0%{
     top:-250px;
     opacity:0;

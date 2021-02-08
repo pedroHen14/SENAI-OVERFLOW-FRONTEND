@@ -1,4 +1,5 @@
 import styled from "styled-components";
+import { loginAnimation } from "../../pages/Login/styles";
 
 export const Overlay = styled.div`
   position: absolute;
@@ -12,6 +13,7 @@ export const Overlay = styled.div`
 `;
 
 export const ModalContainer = styled.section`
+  animation: ${loginAnimation} 0.5s;
   min-width: 250px;
   min-height: 250px;
   max-height: calc(100vh - 20px);

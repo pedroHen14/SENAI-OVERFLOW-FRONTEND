@@ -1,6 +1,9 @@
 import styled from "styled-components";
+import { loginAnimation } from "../../pages/Login/styles";
 
 export const Container = styled.article`
+  animation: ${loginAnimation} 0.5s;
+
   display: flex;
   width: fit-content;
   padding: 2px 10px;
