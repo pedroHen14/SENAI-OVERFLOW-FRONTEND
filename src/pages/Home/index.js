@@ -22,6 +22,7 @@ import { useHistory } from "react-router-dom";
 import Modal from "../../components/Modal";
 import Select from "../../components/Select";
 import Tag from "../../components/Tag";
+import Loading from "../../components/Loading";
 
 function Profile() {
   const student = getUser();
@@ -68,7 +69,7 @@ function Answers({ answers }) {
   );
 }
 
-function Question({ question }) {
+function Question({ question, setLoading }) {
   const [showAnswers, setShowAnswers] = useState(false);
 
   const [newAnswers, setNewAnswers] = useState("");
@@ -85,6 +86,8 @@ function Question({ question }) {
     e.preventDefault();
 
     const questionId = question.id;
+
+    setLoading(true);
 
     try {
       const response = await api.post(`/questions/${questionId}/answers`, {
@@ -108,9 +111,13 @@ function Question({ question }) {
       setAnswers([...answers, answerAdded]);
 
       setNewAnswers("");
+
+      setLoading(false);
     } catch (error) {
       console.error(error);
       alert(error.response.data.error);
+
+      setLoading(false);
     }
   };
 
@@ -153,7 +160,7 @@ function Question({ question }) {
         )}
         <form onSubmit={handleAddAnswer}>
           <textarea
-            minLength="10"
+            minLength={2}
             onChange={(e) => setNewAnswers(e.target.value)}
             placeholder="Responda essa dúvida!"
             required
@@ -166,7 +173,7 @@ function Question({ question }) {
   );
 }
 
-function NewQuestion({ handleReload }) {
+function NewQuestion({ handleReload, setLoading }) {
   const [newQuestion, setNewQuestion] = useState({
     title: "",
     description: "",
@@ -246,6 +253,8 @@ function NewQuestion({ handleReload }) {
     if (image) data.append("image", image);
     if (newQuestion.gist) data.append("gist", newQuestion.gist);
 
+    setLoading(true);
+
     try {
       await api.post("/questions", data, {
         headers: {
@@ -321,11 +330,17 @@ function Home() {
 
   const [showNewQuestion, setShowNewQuestion] = useState(false);
 
+  const [loading, setLoading] = useState(false);
+
   useEffect(() => {
     const loadQuestions = async () => {
+      setLoading(true);
+
       const response = await api.get("/feed");
 
       setQuestions(response.data);
+
+      setLoading(false);
     };
 
     loadQuestions();
@@ -344,12 +359,13 @@ function Home() {
 
   return (
     <>
+      {loading && <Loading />}
       {showNewQuestion && (
         <Modal
           title="Faça uma pergunta"
           handleClose={() => setShowNewQuestion(false)}
         >
-          <NewQuestion handleReload={handleReload} />
+          <NewQuestion handleReload={handleReload} setLoading={setLoading} />
         </Modal>
       )}
       <Container>
@@ -363,7 +379,7 @@ function Home() {
           </ProfileContainer>
           <FeedContainer>
             {questions.map((q) => (
-              <Question question={q} />
+              <Question question={q} setLoading={setLoading} />
             ))}
           </FeedContainer>
           <ActionsContainer>
