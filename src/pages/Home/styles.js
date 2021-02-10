@@ -42,8 +42,23 @@ export const ProfileContainer = styled.div`
     gap: 4px;
   }
 
+  label {
+    cursor: pointer;
+    text-decoration: underline;
+    transition: 0.2s;
+
+    :hover {
+      color: var(--primary);
+    }
+  }
+
+  input[type="file"] {
+    display: none;
+  }
+
   img {
     width: 35%;
+    align-self: center;
     border-radius: 50%;
   }
 `;

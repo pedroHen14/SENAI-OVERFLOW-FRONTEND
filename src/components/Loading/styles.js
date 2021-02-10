@@ -22,7 +22,7 @@ export const Container = styled.div`
   > img {
     width: 100px;
     /* height: 100px; */
-    animation: ${spin} 0.01s linear infinite;
+    animation: ${spin} 0.5s linear infinite;
     /* opacity: 0.8; */
     /* border: solid 2px var(--dark); */
   }
