@@ -24,6 +24,7 @@ import Select from "../../components/Select";
 import Tag from "../../components/Tag";
 import Loading from "../../components/Loading";
 import { validSquaredImage } from "../../utils";
+import Gist from "react-embed-gist";
 
 function Profile({ setLoading, handleReload, setMessage }) {
   const [student, setStudent] = useState(getUser());
@@ -158,7 +159,15 @@ function Question({ question, setLoading }) {
   return (
     <>
       {showGist && (
-        <Modal title="Gist" handleClose={() => setShowGist(false)}></Modal>
+        <Modal title="Gist" handleClose={() => setShowGist(false)}>
+          <Gist
+            gist="pedroHen14/558a48e001b6e9419c9c33ba79eda9a1"
+            wrapperClass="gist__bash"
+            loadingClass="loading__screen"
+            titleClass="gist__title"
+            file=".bash_profile.sh"
+          />
+        </Modal>
       )}
       <QuestionCard>
         <header>
