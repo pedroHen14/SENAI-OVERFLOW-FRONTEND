@@ -105,6 +105,8 @@ function Question({ question, setLoading }) {
 
   const [answers, setAnswers] = useState([]);
 
+  const [showGist, setShowGist] = useState(false);
+
   useEffect(() => {
     setAnswers(question.Answers);
   }, [question.Answers]);
@@ -154,55 +156,68 @@ function Question({ question, setLoading }) {
   const student = getUser();
 
   return (
-    <QuestionCard>
-      <header>
-        <img
-          src={question.Student.image || imgProfile}
-          alt="imagem de perfil"
-        />
-        <strong>
-          por{" "}
-          {student.studentId === question.Student.id
-            ? "Você"
-            : question.Student.name}
-        </strong>
-        <p> {format(new Date(question.created_at), "dd/MM/yyyy 'às' HH:mm")}</p>
-      </header>
-      <section>
-        <strong>{question.title}</strong>
-        <p>{question.description}</p>
-        <img src={question.image}></img>
-      </section>
-      <footer>
-        <h1 onClick={() => setShowAnswers(!showAnswers)}>
-          {qtdeAnswers === 0 ? (
-            "Seja o primeiro a responder"
+    <>
+      {showGist && (
+        <Modal title="Gist" handleClose={() => setShowGist(false)}></Modal>
+      )}
+      <QuestionCard>
+        <header>
+          <img
+            src={question.Student.image || imgProfile}
+            alt="imagem de perfil"
+          />
+          <strong>
+            por{" "}
+            {student.studentId === question.Student.id
+              ? "Você"
+              : question.Student.name}
+          </strong>
+          <p>
+            {" "}
+            {format(new Date(question.created_at), "dd/MM/yyyy 'às' HH:mm")}
+          </p>
+          {question.gist ? (
+            <button onClick={() => setShowGist(!showGist)}>Gist</button>
           ) : (
+            "nada"
+          )}
+        </header>
+        <section>
+          <strong>{question.title}</strong>
+          <p>{question.description}</p>
+          <img src={question.image}></img>
+        </section>
+        <footer>
+          <h1 onClick={() => setShowAnswers(!showAnswers)}>
+            {qtdeAnswers === 0 ? (
+              "Seja o primeiro a responder"
+            ) : (
+              <>
+                {qtdeAnswers}
+                {qtdeAnswers > 1 ? " Respostas" : " Resposta"}
+              </>
+            )}
+          </h1>
+          {showAnswers && (
             <>
-              {qtdeAnswers}
-              {qtdeAnswers > 1 ? " Respostas" : " Resposta"}
+              {answers.map((a) => (
+                <Answers answers={a} />
+              ))}
             </>
           )}
-        </h1>
-        {showAnswers && (
-          <>
-            {answers.map((a) => (
-              <Answers answers={a} />
-            ))}
-          </>
-        )}
-        <form onSubmit={handleAddAnswer}>
-          <textarea
-            minLength={2}
-            onChange={(e) => setNewAnswers(e.target.value)}
-            placeholder="Responda essa dúvida!"
-            required
-            value={newAnswers}
-          ></textarea>
-          <button>Enviar</button>
-        </form>
-      </footer>
-    </QuestionCard>
+          <form onSubmit={handleAddAnswer}>
+            <textarea
+              minLength={2}
+              onChange={(e) => setNewAnswers(e.target.value)}
+              placeholder="Responda essa dúvida!"
+              required
+              value={newAnswers}
+            ></textarea>
+            <button>Enviar</button>
+          </form>
+        </footer>
+      </QuestionCard>
+    </>
   );
 }
 
