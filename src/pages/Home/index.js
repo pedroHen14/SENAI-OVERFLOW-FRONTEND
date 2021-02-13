@@ -11,6 +11,7 @@ import {
   FormNewQuestion,
   GistIcon,
   ContainerGist,
+  SearchIcon,
 } from "./styles";
 
 import Input from "../../components/Input";
@@ -27,7 +28,8 @@ import Tag from "../../components/Tag";
 import Loading from "../../components/Loading";
 import { validSquaredImage } from "../../utils";
 import ReactEmbedGist from "react-embed-gist";
-import { FaGithub } from "react-icons/fa";
+import { FaGithub, FaSearch } from "react-icons/fa";
+import SearchBar from "../../components/SearchBar";
 
 function Profile({ setLoading, handleReload, setMessage }) {
   const [student, setStudent] = useState(getUser());
@@ -390,6 +392,8 @@ function Home() {
 
   const [showNewQuestion, setShowNewQuestion] = useState(false);
 
+  const [search, setSearch] = useState(false);
+
   const [loading, setLoading] = useState(false);
 
   useEffect(() => {
@@ -417,6 +421,24 @@ function Home() {
     setReload(Math.random());
   };
 
+  const handleSearch = (e) => {
+    e.preventDefault();
+
+    const loadQuestions = async () => {
+      // setLoading(true);
+
+      const response = await api.get(`/feed?word=${e.target.value}`);
+
+      setQuestions(response.data);
+
+      // setLoading(false);
+
+      return response;
+    };
+
+    loadQuestions();
+  };
+
   return (
     <>
       {loading && <Loading />}
@@ -432,6 +454,7 @@ function Home() {
       <Container>
         <Header>
           <Logo src={imgLogo} onClick={handleReload} />
+          <SearchBar label="Pesquisar" id="searchBar" handler={handleSearch} />
           <IconSignOut onClick={handleSignOut} />
         </Header>
         <Content>

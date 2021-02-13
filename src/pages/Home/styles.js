@@ -1,5 +1,5 @@
 import styled from "styled-components";
-import { FaSignOutAlt, FaGithub } from "react-icons/fa";
+import { FaSignOutAlt, FaGithub, FaSearch } from "react-icons/fa";
 
 export const Container = styled.div`
   width: 100vw;
