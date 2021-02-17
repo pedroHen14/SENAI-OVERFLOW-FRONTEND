@@ -30,6 +30,7 @@ import { validSquaredImage } from "../../utils";
 import ReactEmbedGist from "react-embed-gist";
 import { FaGithub, FaSearch } from "react-icons/fa";
 import SearchBar from "../../components/SearchBar";
+import { Button, ButtonFeed } from "../Login/styles";
 
 function Profile({ setLoading, handleReload, setMessage }) {
   const [student, setStudent] = useState(getUser());
@@ -392,15 +393,15 @@ function Home() {
 
   const [showNewQuestion, setShowNewQuestion] = useState(false);
 
-  const [search, setSearch] = useState(false);
-
   const [loading, setLoading] = useState(false);
+
+  const [page, setPage] = useState(1);
 
   useEffect(() => {
     const loadQuestions = async () => {
       setLoading(true);
 
-      const response = await api.get("/feed");
+      const response = await api.get(`/feed?page=${page}`);
 
       setQuestions(response.data);
 
@@ -409,6 +410,20 @@ function Home() {
 
     loadQuestions();
   }, [reload]);
+
+  useEffect(() => {
+    const loadQuestions = async () => {
+      setLoading(true);
+
+      const response = await api.get(`/feed?page=${page}`);
+
+      setQuestions([...questions, ...response.data]);
+
+      setLoading(false);
+    };
+
+    loadQuestions();
+  }, [page]);
 
   const handleSignOut = () => {
     signOut();
@@ -419,6 +434,7 @@ function Home() {
   const handleReload = () => {
     setShowNewQuestion(false);
     setReload(Math.random());
+    setPage(1);
   };
 
   const handleSearch = (e) => {
@@ -427,7 +443,7 @@ function Home() {
     const loadQuestions = async () => {
       // setLoading(true);
 
-      const response = await api.get(`/feed?word=${e.target.value}`);
+      const response = await api.get(`/questions?word=${e.target.value}`);
 
       setQuestions(response.data);
 
@@ -472,6 +488,7 @@ function Home() {
                 setCurrentGist={setCurrentGist}
               />
             ))}
+            <button onClick={() => setPage(page + 1)}>Ver mais</button>
           </FeedContainer>
           <ActionsContainer>
             <button onClick={() => setShowNewQuestion(true)}>
