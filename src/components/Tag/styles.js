@@ -1,22 +1,20 @@
 import styled from "styled-components";
-import { loginAnimation } from "../../pages/Login/styles";
 
 export const Container = styled.article`
-  animation: ${loginAnimation} 0.5s;
-
-  display: flex;
   width: fit-content;
   padding: 2px 10px;
-  border-radius: 4px;
+  display: flex;
   align-items: center;
+
+  border-radius: 4px;
   background-color: var(--darkGray);
+
   margin: 0px 10px 10px 0px;
-  gap: 10px;
 
   > span {
+    margin-left: 10px;
     cursor: pointer;
     font-size: 20px;
-    transition: 0.2s;
 
     :hover {
       color: var(--primary);

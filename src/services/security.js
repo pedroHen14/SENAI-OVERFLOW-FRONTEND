@@ -1,5 +1,5 @@
-import { api } from "./api";
 import jwtDecode from "jwt-decode";
+import { api } from "./api";
 
 const USER_KEY = "@user";
 
@@ -25,7 +25,7 @@ export const getUser = () => {
 export const setUser = (student) => {
   const user = JSON.parse(localStorage.getItem(USER_KEY));
 
-  user.Student = student;
+  user.student = student;
 
   localStorage.setItem(USER_KEY, JSON.stringify(user));
 };
@@ -43,7 +43,6 @@ export const isSignedIn = () => {
     }
 
     api.defaults.headers.common["Authorization"] = `Bearer ${user.token}`;
-
     return true;
   }
 

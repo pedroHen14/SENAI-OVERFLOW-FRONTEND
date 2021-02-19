@@ -1,14 +1,17 @@
-import { Container, FormLogin, Body, Header, Button } from "./styles";
-import Input from "../../components/Input";
+import { useState } from "react";
 import { Link, useHistory } from "react-router-dom";
-import { api } from "../../services/api";
-import { useState, useEffect } from "react";
-import { signIn } from "../../services/security";
-import Loading from "../../components/Loading";
 import Alert from "../../components/Alert";
+import Input from "../../components/Input";
+import Loading from "../../components/Loading";
+
+import { api } from "../../services/api";
+import { signIn } from "../../services/security";
+import { Container, FormLogin, Header, Body, Button } from "./styles";
 
 function Login() {
   const history = useHistory();
+
+  const [isLoading, setIsLoading] = useState(false);
 
   const [message, setMessage] = useState(undefined);
 
@@ -17,33 +20,23 @@ function Login() {
     password: "",
   });
 
-  const [loading, setLoading] = useState(false);
-
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    setLoading(true);
+    setIsLoading(true);
 
     try {
       const response = await api.post("/sessions", login);
 
       signIn(response.data);
 
-      setLoading(false);
-
-      console.log(response.data);
-
-      //Implementar a autorização
+      setIsLoading(false);
 
       history.push("/home");
     } catch (error) {
-      setLoading(false);
-
       console.error(error);
-      setMessage({
-        title: "Ops",
-        description: error.response.data.error,
-      });
+      setMessage({ title: "Ops...", description: error.response.data.error });
+      setIsLoading(false);
     }
   };
 
@@ -54,12 +47,12 @@ function Login() {
   return (
     <>
       <Alert message={message} type="error" handleClose={setMessage} />
-      {loading && <Loading />}
+      {isLoading && <Loading />}
       <Container>
         <FormLogin onSubmit={handleSubmit}>
           <Header>
-            <h1>Bem vindo ao Senai Overflow</h1>
-            <h2>Para sua pergunta nós temos a resposta</h2>
+            <h1>BEM VINDO AO SENAIOVERFLOW</h1>
+            <h2>O SEU PORTAL DE RESPOSTAS</h2>
           </Header>
           <Body>
             <Input
@@ -79,7 +72,7 @@ function Login() {
               required
             />
             <Button>Entrar</Button>
-            <Link to="/register">Ou clique aqui para se cadastrar</Link>
+            <Link to="/register"> Ou clique aqui para se cadastrar</Link>
           </Body>
         </FormLogin>
       </Container>

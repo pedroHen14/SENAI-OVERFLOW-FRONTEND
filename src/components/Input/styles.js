@@ -9,17 +9,23 @@ export const Container = styled.div`
     border: 0;
     padding-left: 10px;
     border-radius: 3px;
+
     font-family: sans-serif;
   }
 
   > label {
-    cursor: text;
     position: absolute;
-    top: 0;
     left: 10px;
-    color: var(--darkGray);
+    top: 0px;
     display: flex;
     align-items: center;
+
+    transition: 0.2s ease-in-out;
+
+    color: var(--darkGray);
+    cursor: text;
+
+    pointer-events: none;
   }
 
   > input,
@@ -27,14 +33,17 @@ export const Container = styled.div`
     width: 100%;
     height: 30px;
     font-size: 16px;
-    transition: 0.2s ease-in-out;
+  }
+
+  > input:focus {
+    border-bottom: 2px solid var(--primary);
   }
 
   > input:not(:placeholder-shown) + label,
   > input:focus + label {
-    left: 0;
     font-size: 14px;
     color: var(--light);
     top: -25px;
+    left: 0;
   }
 `;

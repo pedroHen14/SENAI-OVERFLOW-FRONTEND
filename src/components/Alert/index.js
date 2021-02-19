@@ -1,5 +1,5 @@
-import { Container } from "./styles";
 import { useEffect, useRef } from "react";
+import { Container } from "./styles";
 
 function Alert({ message, type, handleClose }) {
   const containerRef = useRef();
@@ -14,7 +14,7 @@ function Alert({ message, type, handleClose }) {
     } else {
       containerRef.current.style.width = "0px";
     }
-  }, [message]);
+  }, [message, handleClose]);
 
   return (
     <Container type={type} ref={containerRef}>

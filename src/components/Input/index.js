@@ -9,7 +9,7 @@ function Input({ id, label, value, handler, ...rest }) {
         placeholder=" "
         value={value}
         onChange={handler}
-      ></input>
+      />
       <label htmlFor={id}>{label}</label>
     </Container>
   );

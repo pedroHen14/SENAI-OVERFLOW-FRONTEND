@@ -4,14 +4,17 @@ export const Container = styled.div`
   position: absolute;
   top: 0;
   right: 0;
+
   width: 0px;
-  transition: width 0.4s;
   height: 80px;
   margin: 10px;
-  gap: 10px;
+
+  transition: width 0.4s;
+
+  border-radius: 4px;
   background-color: ${(props) =>
-    props.type === "error" ? "#d90429cc" : "#04d929cc"};
-  border-radius: 5px;
+    props.type === "error" ? "#d90429aa" : "#04d929aa"};
+
   white-space: nowrap;
   overflow: hidden;
 
@@ -29,7 +32,9 @@ export const Container = styled.div`
     position: absolute;
     top: 5px;
     right: 10px;
-    font-size: 30px;
+
+    font-size: 20px;
+
     cursor: pointer;
     transition: 0.2s;
 
